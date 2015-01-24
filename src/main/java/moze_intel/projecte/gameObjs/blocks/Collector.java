@@ -59,26 +59,14 @@ public class Collector extends BlockDirection
 	{
 		int orientation = MathHelper.floor_double((double)(entLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 		
-		if (orientation == 0)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-		}
-
-		if (orientation == 1)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-		}
-
-		if (orientation == 2)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-		}
-
-		if (orientation == 3)
-		{
-			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-		}
+		byte [] values = {2, 5, 3, 4};
 		
+		if (orientation >= 0 && orientation <= 4) {
+			byte value = values[orientation];
+			
+			world.setBlockMetadataWithNotify(x, y, z, value, 2);
+		}
+
 		TileEntity tile = world.getTileEntity(x, y, z);
 		
 		if (stack.hasTagCompound() && stack.stackTagCompound.getBoolean("ProjectEBlock") && tile instanceof TileEmc)
@@ -120,21 +108,11 @@ public class Collector extends BlockDirection
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) 
 	{
-		if (tier == 1) 
-		{
-			return new CollectorMK1Tile();
+		switch (tier) {
+			default: return null;
+			case 1: return new CollectorMK1Tile();
+			case 2: return new CollectorMK1Tile();
+			case 3: return new CollectorMK1Tile();
 		}
-		
-		if (tier == 2)
-		{
-			return new CollectorMK2Tile();
-		}
-		
-		if (tier == 3)
-		{
-			return new CollectorMK3Tile();
-		}
-		
-		return null;
 	}
 }
